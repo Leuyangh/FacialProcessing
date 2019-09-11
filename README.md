@@ -1,4 +1,6 @@
 # FacialProcessing
+Code written for the Media Communications lab at USC studying facial recognition using non-back propagation trained neural nets. Included code performs face detection in photos and the extraction of patches around 6 important facial landmarks. Code for neural net training not available at this time.
+
 FaceDetector.py
 >Code to detect faces in an image using landmarks and a trained DNN from dlib. Using the LFW3D dataset. Outputs 64x64 images of faces from photos
 PatchExtractor.py
