@@ -10,6 +10,9 @@ PatchExtractor.py
 PatchExtractorSmall.py
 >Extracts a smaller patch size 20x20. On the LFW dataset, this code found that only eyebrows and mouth appear within 10 pixels of the bounds of the image. Therefore, this code takes patches centered 10 below eyebrows to ensure the image remains in bounds. Some eyebrows were actually in negative y values so in those cases, the would-be out of bounds areas are padded black to make a valid image. Eyes and nose patches are centered on feature. Mouth patches are centered 7 pixels above mouth feature.
 
+PatchExtractorAllPurpose
+>Patch extractor modified to run on any dataset with pictures of varying size. Any out of bounds areas in a patch are padded with black pixels. Contains additional code to output helper images of the original face with green dots over the 6 feature centers. Example folder in examples
+
 Sample input/output is from LFW3D dataset. Output_FaceDetector folder is the input for PatchExtractor
 
 Trained DNN for shape prediction can be found here: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
