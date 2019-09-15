@@ -18,8 +18,8 @@ predictor = dlib.shape_predictor("C:\\Users\\Eric\\Documents\\Face_recognition_p
 
 """PATCH EXTRACTION"""
 
-datasetPath= "C:\\Users\\Eric\\Documents\\Face_recognition_project\\Frontalized_LFW\\Frontalized_LFW\\"
-savingpath= "C:\\Users\\Eric\\Documents\\Face_recognition_project\\Frontalized_LFWPatchesLarge\\"
+datasetPath= "C:\\Users\\Eric\\Documents\\Face_Recognition_Project\\alignedFrontalizedLfw2\\alignedFrontalizedLfw2\\"
+savingpath= "C:\\Users\\Eric\\Documents\\Face_recognition_project\\FrontalizedCentralizedPatches\\"
 helperPath= "C:\\Users\\Eric\\Documents\\Face_recognition_project\\Frontalized_LFWHelp\\"
 
 identities = glob(datasetPath+"*")
@@ -27,12 +27,15 @@ count = 0
 inputPicTotal = 0
 outputPicTotal = 0
 badpics = 0
-patchsize = 25 #in both direction
+pcount = [0, 0, 0, 0, 0, 0]
+areanames = ["right_eyes\\", "left_eyes\\", "right_eyebrows\\", "left_eyebrows\\", "noses\\", "mouths\\"]
+patchsize = 10 #in both direction
 for identity in identities:
     count += 1
     identityStr = os.path.basename(identity).split('\\')[-1]
     pics = glob(identity+"\\*")
-    print("Creating patches for " + identityStr + "'s " + str(len(pics)) + " picture(s)")
+    if(count%500 == 0):
+        print("Creating patches for " + identityStr + "'s " + str(len(pics)) + " picture(s)")
     inputPicTotal += len(pics)
     for pic in pics:
         picID = os.path.basename(pic).split('\\')[-1]
@@ -47,7 +50,6 @@ for identity in identities:
         #decrement by 1 to account for starting at 0 not 1 -> 41, 46, 19, 24, 33, 66
         centerpts = [41, 46, 19, 24, 33, 66]
         #putting numbers before names to make sure theyre in the right order in the folders
-        areanames = ["right_eyes\\", "left_eyes\\", "right_eyebrows\\", "left_eyebrows\\", "noses\\", "mouths\\"]
         for i,point in enumerate(centerpts):
             x, y = shape[point]
             ymin = y - patchsize
@@ -93,10 +95,15 @@ for identity in identities:
                 finalPath = dest_path + picID + ".jpg"
                 cv2.imwrite(finalPath, padded_img)
                 badpics+=1
-                print("Padded image No." + str(badpics) + ", " + picID)
+                print("Padded image No." + str(badpics) + ", " + picID + " " + areanames[i])
+                pcount[i] += 1
                 outputPicTotal += 1
+                """
             cv2.circle(image, (x, y), 1, (0, 255, 0), -1)
         os.makedirs(helperPath, exist_ok=True)
         finalPath = helperPath + picID + ".jpg"
         cv2.imwrite(finalPath, image)
+        """
 print("Created " + str(outputPicTotal) + " pictures from " + str(inputPicTotal) + " aligned images with " + str(badpics) + " padded images")
+for i,p in enumerate(pcount):
+    print ("Padded " + str(p) + " " + areanames[i])
